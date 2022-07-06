@@ -21,10 +21,10 @@ class Booking
     #[ORM\JoinColumn(nullable: false)]
     private $station_id;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'datetime', length: 255)]
     private $charge_start;
 
-    #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\Column(type: 'datetime', length: 255)]
     private $charge_end;
 
     public function getId(): ?int
@@ -56,24 +56,24 @@ class Booking
         return $this;
     }
 
-    public function getChargeStart(): ?string
+    public function getChargeStart(): ?\DateTime
     {
         return $this->charge_start;
     }
 
-    public function setChargeStart(string $charge_start): self
+    public function setChargeStart(\DateTime $charge_start): self
     {
         $this->charge_start = $charge_start;
 
         return $this;
     }
 
-    public function getChargeEnd(): ?string
+    public function getChargeEnd(): ?\DateTime
     {
         return $this->charge_end;
     }
 
-    public function setChargeEnd(string $charge_end): self
+    public function setChargeEnd(\DateTime $charge_end): self
     {
         $this->charge_end = $charge_end;
 
