@@ -18,18 +18,16 @@ class AppFixtures extends Fixture
 
         for ($i = 0; $i < 20; $i++) {
             $location = new Location();
-            $location->setName('Auchan'.$i);
+            $location->setName('Auchan' . $i);
             $location->setTotalSpots('2');
             $location->setLat('23.5');
             $location->setLongitude('45.3');
             $location->setPrice('1.2');
-            if ($i % 3 == 0){
+            if ($i % 3 == 0) {
                 $location->setCity('Craiova');
-            }
-            elseif ($i % 3 == 1) {
+            } elseif ($i % 3 == 1) {
                 $location->setCity('Bucuresti');
-            }
-            elseif ($i % 3 == 2) {
+            } elseif ($i % 3 == 2) {
                 $location->setCity('Cluj');
             }
             $manager->persist($location);
@@ -38,13 +36,12 @@ class AppFixtures extends Fixture
 
         //STATION FIXTURE
 
-        for ($i = 0; $i < 20; $i++){
+        for ($i = 0; $i < 20; $i++) {
             $station = new Station();
-            $station->setLocation($manager->getRepository(Location::class)->findOneBy(['Name' => 'Auchan'.$i]));
+            $station->setLocation($manager->getRepository(Location::class)->findOneBy(['Name' => 'Auchan' . $i]));
             if ($i % 2 == 0) {
                 $station->setType('type 2');
-            }
-            else {
+            } else {
                 $station->setType('type 1');
             }
 
@@ -55,10 +52,9 @@ class AppFixtures extends Fixture
 
         //USER FIXTURE
 
-        for ($i = 0; $i < 20; $i++)
-        {
+        for ($i = 0; $i < 20; $i++) {
             $user = new User();
-            $user->setName('Marcel'.$i);
+            $user->setName('Marcel' . $i);
             $user->setEmail('marcel@gmail.com');
             $user->setCity('Craiova');
             $manager->persist($user);
@@ -67,10 +63,9 @@ class AppFixtures extends Fixture
 
         //CAR FIXTURE
 
-        for ($i = 0; $i < 20; $i++)
-        {
+        for ($i = 0; $i < 20; $i++) {
             $car = new Car();
-            $car->setUser($manager->getRepository(User::class)->findOneBy(['name' => 'Marcel'.$i]));
+            $car->setUser($manager->getRepository(User::class)->findOneBy(['name' => 'Marcel' . $i]));
             $car->setLicensePlate('DJ99BBB');
             $car->setChargeType('type 1');
             $manager->persist($car);
@@ -79,15 +74,15 @@ class AppFixtures extends Fixture
 
         //BOOKING FIXTURE
 
-        for ($i = 0; $i < 20; $i++)
-        {
-            $booking = new Booking();
-            $booking->setCarId($manager->getRepository(Car::class)->findOneBy(['license_plate' => 'DJ99BBB']));
-            $booking->setStationId($manager->getRepository(Station::class)->findOneBy(['power' => '34']));
-            $booking->setChargeStart(new \DateTime("+$i day"));
-            $booking->setChargeEnd(new \DateTime("+$i day +1 hour"));
-            $manager->persist($booking);
-        }
+//        for ($i = 0; $i < 20; $i++)
+//        {
+//            $booking = new Booking();
+//            $booking->setCarId($manager->getRepository(Car::class)->findOneBy(['license_plate' => 'DJ99BBB']));
+//            $booking->setStationId($manager->getRepository(Station::class)->findOneBy(['power' => '34']));
+//            $booking->setChargeStart(new \DateTime("+$i day"));
+//            $booking->setChargeEnd(new \DateTime("+$i day +1 hour"));
+//            $manager->persist($booking);
+//        }
 
         $manager->flush();
     }
