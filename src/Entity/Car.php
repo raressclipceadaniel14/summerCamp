@@ -19,8 +19,7 @@ class Car
     #[ORM\Column(type: 'string', length: 255)]
     private $charge_type;
 
-    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'no')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'cars')]
     private $user;
 
     public function getId(): ?int
