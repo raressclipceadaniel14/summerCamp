@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="container-fluid" style="padding: 20px 30px; text-align: center;">
+        {% if message != 'Nonexistent' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+        <h1 style="margin-top: 20px"><strong>{{ app.user.name }}</strong></h1>
+        <hr style="width: 700px; margin-top: 50px; margin-bottom: 35px;">
+
+        <h2>Add cars</h2>
+        <form method="post">
+            <div class="container-fluid" style="padding: 20px 40%; text-align: center;">
+                <div class="form-group">
+                    <div>
+                        <input name="license" type="text" class="form-control" placeholder="License plate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <select class="form-control" name= "chargeType" required>
+                            <option selected value="er">Charge type</option>
+                            <option value="1">Type 1</option>
+                            <option value="2">Type 2</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary col-1"">Add car</button>
+        </form>
+
+        {% if app.user.getCars is not empty %}
+            <hr style="width: 700px; margin-bottom: 30px; margin-top: 40px">
+            <h2>Garage</h2>
+            <div class="container-fluid" style="padding: 5px 700px; text-align: center">
+                <table class="table">
+                    <tr>
+                        <th scope="col">License Plate</th>
+                        <th scope="col">Charge Type</th>
+                        <th scope="col">Delete Car</th>
+                    </tr>
+                    <tbody>
+                    {% for car in app.user.getCars %}
+                        <tr>
+                            <th>{{ car.licensePlate }}</th>
+                            <th>{{ car.chargeType }}</th>
+                            <th>
+                                <form action="{{ path('deleteCar', {'id': car.id}) }}"
+                                      style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <hr style="width: 800px; margin-bottom: 50px">
+        {% endif %}
+
+        {% if bookings is not empty %}
+            <h2>Bookings</h2>
+            <div class="row m-1">
+
+                <div class="container-fluid" style="padding: 20px 500px; text-align: center">
+                    <table class="table">
+                        <tr>
+                            <th scope="col">Location</th>
+                            <th scope="col">Station</th>
+                            <th scope="col">Car</th>
+                            <th scope="col">Period</th>
+                            <th scope="col">Edit Booking</th>
+                            <th scope="col">Delete Booking</th>
+                        </tr>
+                        <tbody>
+                        {% for book in bookings %}
+                        <tr>
+                            <th>{{ book.station.location.name }}</th>
+                            <th>{{ book.station.id }}</th>
+                            <th>{{ book.car.licensePlate }}</th>
+                            <th>{{ book.chargestart|date("d/m/Y H:i", false) }}
+                                - {{ book.chargeend|date("d/m/Y H:i", false) }}</th>
+                            <th>
+                                <form action="{{ path('editBooking', {'id': book.id}) }}">
+                                    <button type="submit" class="btn btn-primary">Edit</button>
+                                </form>
+                            </th>
+                            <th>
+                                <form action="{{ path('deleteBooking', {'id': book.id}) }}"
+                                      style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            </th>
+                        </tr>
+                        </tbody>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+            <hr style="width: 1000px">
+        {% endif %}
+    </div>
+{% endblock %}
+

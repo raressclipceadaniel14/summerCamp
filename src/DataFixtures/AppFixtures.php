@@ -20,8 +20,31 @@ class AppFixtures extends Fixture
             $location = new Location();
             $location->setName('Auchan' . $i);
             $location->setTotalSpots('2');
-            $location->setLat('23.5');
-            $location->setLongitude('45.3');
+            if ($i == 1) {
+                $location->setLat('44.817930');
+                $location->setLongitude('24.885550');
+            }
+            elseif ($i == 2) {
+                $location->setLat('45.755480');
+                $location->setLongitude('21.234650');
+            }
+            elseif ($i == 3) {
+                $location->setLat('44.477774');
+                $location->setLongitude('26.103765');
+            }
+            elseif ($i == 4) {
+                $location->setLat('45.021881');
+                $location->setLongitude('23.264071');
+            }
+            elseif ($i == 5) {
+                $location->setLat('43.993640');
+                $location->setLongitude('22.928840');
+            }
+            else
+            {
+                $location->setLat('45.3');
+                $location->setLongitude('23.5');
+            }
             $location->setPrice('1.2');
             if ($i % 3 == 0) {
                 $location->setCity('Craiova');

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\StationsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: StationsRepository::class)]
@@ -22,6 +24,14 @@ class Station
 
     #[ORM\Column(type: 'integer')]
     private $power;
+
+    #[ORM\OneToMany(mappedBy: 'station', targetEntity: Booking::class)]
+    private $bookings;
+
+    public function __construct()
+    {
+        $this->bookings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -61,6 +71,36 @@ class Station
     public function setPower(int $power): self
     {
         $this->power = $power;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Booking>
+     */
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): self
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings[] = $booking;
+            $booking->setStation($this);
+        }
+
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): self
+    {
+        if ($this->bookings->removeElement($booking)) {
+            // set the owning side to null (unless already changed)
+            if ($booking->getStation() === $this) {
+                $booking->setStation(null);
+            }
+        }
 
         return $this;
     }

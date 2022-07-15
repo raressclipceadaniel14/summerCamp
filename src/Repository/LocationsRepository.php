@@ -64,11 +64,12 @@ class LocationsRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+
     public function getLocationOptions(): array
     {
-        $query = $this->createQueryBuilder('u')
-            ->select('u.City')
-            ->groupBy('u.City')
+        $query = $this->createQueryBuilder('l')
+            ->select('l.City')
+            ->groupBy('l.City')
             ->getQuery()
         ;
         return $query->execute(array(), Query::HYDRATE_SCALAR_COLUMN);

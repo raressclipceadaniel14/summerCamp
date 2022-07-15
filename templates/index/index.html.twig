@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello StationController!
+    {% include '/form/index.html.twig' %}
+{% endblock %}
+
+{% use "bootstrap_base_layout.html.twig" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+    <head>
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+              integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+              crossorigin=""/>
+    </head>
+
+    <div class="container-fluid" style="padding: 20px 30%; text-align: center">
+        <h1 class="h1 m-md-4">Filter</h1>
+        {{ form_start(form) }}
+        <div class="form-group">
+            {{ form_widget(form.cities, {'attr': {'class': 'form-control col-6', 'placeholder': 'Select City', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+        </div>
+        <div class="form-group">
+            {{ form_widget(form.type, {'attr': {'class': 'form-control col-6', 'placeholder': 'Select City', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Filter</button>
+        {{ form_end(form) }}
+
+        <hr style="width: 700px; margin-bottom: 20px; margin-top: 40px">
+
+        <h1 class="h1 m-md-5">Locations</h1>
+        <table class="table">
+            <tr>
+                <th scope="col">Station ID</th>
+                <th scope="col">Location</th>
+                <th scope="col">City</th>
+                <th scope="col">Power</th>
+                <th scope="col">Type</th>
+                <th scope="col">Book a station</th>
+            </tr>
+            <tbody>
+            {% for station in stations %}
+                <tr>
+                    <th scope="row">{{ station.id }}</th>
+                    <th>{{ station.location.name }}</th>
+                    <th>{{ station.location.city }}</th>
+                    <th>{{ station.power }}</th>
+                    <th>{{ station.type }}</th>
+                    <td> <button class="btn btn-primary"><a style="text-decoration: none; color: white" href= /station/{{ station.id }}>Book</a></button> </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div id="map" style="width: 1000px; height: 600px; margin-left: 23%; margin-bottom: 100px"></div>
+
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+            integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+            crossorigin=""></script>
+    <script>
+        var map = L.map('map').setView({lon: 25, lat: 45.95}, 7);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+        {% for location in locations %}
+        L.marker({lon: {{ location.getLongitude }}, lat: {{ location.getLat }}}).bindPopup("<h4>"+"{{ location.getName }}"+"</h4>").addTo(map);
+        {% endfor %}
+    </script>
+{% endblock %}

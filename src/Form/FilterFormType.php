@@ -23,21 +23,26 @@ class FilterFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('City', ChoiceType::class, [
-                'choices' => $this->locationsRepository->getLocationOptions(),
+            ->add('cities', ChoiceType::class, [
+                'choices' => [
+                    'Select City',
+                    $this->locationsRepository->getLocationOptions(),
+                ],
                 'choice_label' => function ($value) {
                     return $value;
                 }
             ],
             )
-            ->add('Type', ChoiceType::class, [
-                'choices' => $this->stationsRepository->getStationTypeOptions(),
+            ->add('type', ChoiceType::class, [
+                'choices' => [
+                    'Select Charge Type',
+                    $this->stationsRepository->getStationTypeOptions(),
+                ],
                 'choice_label' => function ($value) {
                     return $value;
                 }
             ],
             )
-            ->add('save', SubmitType::class, ['label' => 'Filter'])
         ;
     }
 

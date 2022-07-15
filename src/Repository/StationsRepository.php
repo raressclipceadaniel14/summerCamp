@@ -69,39 +69,20 @@ class StationsRepository extends ServiceEntityRepository
 
     public function getStationTypeOptions(): array
     {
-        $query = $this->createQueryBuilder('u')
-            ->select('u.type')
-            ->groupBy('u.type')
+        $query = $this->createQueryBuilder('s')
+            ->select('s.type')
+            ->groupBy('s.type')
             ->getQuery();
         return $query->execute(array(), Query::HYDRATE_SCALAR_COLUMN);
     }
 
-    /**
-     * @param $type
-     * @param $city
-     * @return float|int|mixed|string
-     */
-    public function findStations($type, $city)
-    {
-        $qb = $this->createQueryBuilder('s');
-
-        $qb = $qb
-            ->join('s.location', 'l')
-            ->addSelect('l')
-            ->select('s.id', 's.type', 'l.City');
-
-        if (!empty($type)) {
-            $qb = $qb
-                ->andWhere('s.type like :type')
-                ->setParameter('type', $type);
-        }
-        if (!empty($city)) {
-            $qb = $qb
-                ->andWhere('l.City like :city')
-                ->setParameter('city', $city);
-        }
-        return $qb->getQuery()->getResult();
+    public function filterCityCharger($city, $charger): array {
+        $sql = 'SELECT s FROM App\Entity\Station s INNER JOIN App\Entity\Location l WHERE l.City = ?1 AND s.type = ?2 AND s.location = l';
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $city)->setParameter(2, $charger)->getResult();
     }
 
-
+    public function filterCharger($charger): array {
+        $sql = 'SELECT s FROM App\Entity\Station s INNER JOIN App\Entity\Location l WHERE s.type = ?1 AND s.location = l';
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $charger)->getResult();
+    }
 }

@@ -13,47 +13,22 @@ class Booking
     #[ORM\Column(type: 'integer')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: Car::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $car_id;
-
-    #[ORM\ManyToOne(targetEntity: Station::class)]
-    #[ORM\JoinColumn(nullable: false)]
-    private $station_id;
-
     #[ORM\Column(type: 'datetime', length: 255)]
     private $charge_start;
 
     #[ORM\Column(type: 'datetime', length: 255)]
     private $charge_end;
 
+    #[ORM\ManyToOne(targetEntity: Car::class, inversedBy: 'bookings')]
+    private $car;
+
+    #[ORM\ManyToOne(targetEntity: Station::class, inversedBy: 'bookings')]
+    #[ORM\JoinColumn(nullable: false)]
+    private $station;
+
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCarId(): ?Car
-    {
-        return $this->car_id;
-    }
-
-    public function setCarId(?Car $car_id): self
-    {
-        $this->car_id = $car_id;
-
-        return $this;
-    }
-
-    public function getStationId(): ?Station
-    {
-        return $this->station_id;
-    }
-
-    public function setStationId(?Station $station_id): self
-    {
-        $this->station_id = $station_id;
-
-        return $this;
     }
 
     public function getChargeStart(): ?\DateTime
@@ -76,6 +51,30 @@ class Booking
     public function setChargeEnd(\DateTime $charge_end): self
     {
         $this->charge_end = $charge_end;
+
+        return $this;
+    }
+
+    public function getCar(): ?Car
+    {
+        return $this->car;
+    }
+
+    public function setCar(?Car $car): self
+    {
+        $this->car = $car;
+
+        return $this;
+    }
+
+    public function getStation(): ?Station
+    {
+        return $this->station;
+    }
+
+    public function setStation(?Station $station): self
+    {
+        $this->station = $station;
 
         return $this;
     }

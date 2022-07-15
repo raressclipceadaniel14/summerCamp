@@ -3,19 +3,33 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
-
-    <h1>Register</h1>
-
+<div class="container-fluid" style="padding: 20px 30%; text-align: center;">
+    <h1 class="h1 m-md-5">REGISTER</h1>
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    <div class="form-group">
+        {{ form_widget(registrationForm.name, {'attr': {'class': 'form-control col-6', 'placeholder': 'Name', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+    </div>
 
-        <button type="submit" class="btn">Register</button>
+    <div class="form-group">
+        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control col-6', 'placeholder': 'Email', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(registrationForm.plainPassword, {'attr': {'class': 'form-control col-6', 'placeholder': 'Password', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(registrationForm.city, {'attr': {'class': 'form-control col-6', 'placeholder': 'City', 'style': 'margin-left: 25%;'}, 'required': 'true'}) }}
+    </div>
+
+    <div class="form-group">
+        {{ form_widget(registrationForm.agreeTerms, {'attr': {'class' : "form-check-input"}, 'required': 'true'}) }}
+        <label class="form-check-label" for="form2Example34"> Agree Terms </label>
+    </div>
+
+    <button type="submit" class="btn btn-primary col-6">Sign Up</button>
     {{ form_end(registrationForm) }}
+</div>
+
+
 {% endblock %}

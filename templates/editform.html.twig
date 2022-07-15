@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="container-fluid" style="padding: 20px 40px; text-align: center;">
+        {% if message != 'Nonexistent' %}
+            <div class="alert alert-danger" role="alert">{{ message }}</div>
+        {% endif %}
+        <h2 class="h1 m-md-5">Edit booking</h2>
+
+        <hr style="width: 300px;">
+        <h2 style="color: black;">{{ booking.station.Location.name }}</h2>
+        <h4 style="color: gray;">Station: {{ booking.station.id }}</h4>
+        <hr style="width: 300px;">
+
+        {{ form_start(form) }}
+        {% if form_errors(form) %}
+            <div class="alert alert-danger pb-0" role="alert">{{ form_errors(form) }}</div>
+        {% endif %}
+        <div class="container-fluid" style="padding: 10px 40%; text-align: center;">
+            <div class="form-group">
+                <h4 class="h5 mb-2">Booking start</h4>
+                {{ form_widget(form.chargestart, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <h4 class="h5 mb-2 mt-4">Booking End</h4>
+                {{ form_widget(form.chargeend, {'attr': {'class': 'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <h4 class="h5 mb-2 mt-4">Car</h4>
+                {{ form_widget(form.car, {'attr': {'class': 'form-control'}}) }}
+            </div>
+        </div>
+        {{ form_row(form.book, {'attr': {'class': 'btn btn-primary', 'style': 'width: 100px;'}}) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

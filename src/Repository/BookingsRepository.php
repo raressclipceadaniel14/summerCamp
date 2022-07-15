@@ -39,12 +39,6 @@ class BookingsRepository extends ServiceEntityRepository
         }
     }
 
-    public function getActiveBookings($station_id)
-    {
-        $sql = "SELECT b FROM App\Entity\Booking b INNER JOIN App\Entity\Station s WHERE s.id = ?1 AND b.station_id = s AND b.charge_end > ?2 ORDER BY b.charge_start";
-        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $station_id)->setParameter(2, new \DateTimeImmutable())->getResult();
-    }
-
 
 //    /**
 //     * @return Bookings[] Returns an array of Bookings objects
@@ -70,4 +64,27 @@ class BookingsRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+    public function getActiveBookings($station)
+    {
+        $sql = "SELECT b FROM App\Entity\Booking b INNER JOIN App\Entity\Station s WHERE s.id = ?1 AND b.station = s AND b.charge_end > ?2 ORDER BY b.charge_start";
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $station)->setParameter(2, new \DateTimeImmutable())->getResult();
+    }
+
+    public function getUserBookings($user)
+    {
+        $sql = "SELECT b FROM App\Entity\Booking b INNER JOIN App\Entity\Car c WHERE c = b.car AND c.user = ?1 AND b.charge_end > ?2 ORDER BY b.charge_start";
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $user)->setParameter(2,  new \DateTimeImmutable())->getResult();
+    }
+
+    public function getOverlappingBookings($station, $start, $end)
+    {
+        $sql = "SELECT b FROM App\Entity\Booking b WHERE b.station = ?3 AND ((b.charge_start <= ?1 AND b.charge_end >= ?1) OR (b.charge_start <= ?2 AND b.charge_end >= ?2) OR (b.charge_start >= ?1 AND b.charge_end <= ?2))";
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $start)->setParameter(2,  $end)->setParameter(3, $station)->getResult();
+    }
+
+    public function getCarOverlap($car, $start, $end)
+    {
+        $sql = "SELECT b FROM App\Entity\Booking b WHERE b.car = ?3 AND ((b.charge_start <= ?1 AND b.charge_end >= ?1) OR (b.charge_start <= ?2 AND b.charge_end >= ?2) OR (b.charge_start >= ?1 AND b.charge_end <= ?2))";
+        return $this->getEntityManager()->createQuery($sql)->setParameter(1, $start)->setParameter(2,  $end)->setParameter(3, $car)->getResult();
+    }
 }
